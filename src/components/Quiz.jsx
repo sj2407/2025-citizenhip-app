@@ -284,7 +284,7 @@ function Quiz({ questions, userState, federalOfficials, onComplete, onExit, mode
                     type="button"
                     onClick={() => setShowMnemonic(!showMnemonic)}
                     className={`btn-secondary px-4 ${showMnemonic ? 'bg-purple-600/30 border-purple-500/50' : ''}`}
-                    title="Memory Tip"
+                    title="Hint"
                   >
                     <Brain className="w-4 h-4" />
                   </button>
@@ -334,13 +334,13 @@ function Quiz({ questions, userState, federalOfficials, onComplete, onExit, mode
             </div>
           )}
 
-          {/* Memory Tip */}
+          {/* Hint */}
           {showMnemonic && !feedback && currentQuestion.mnemonic && (
             <div className="mt-4 p-4 rounded-lg bg-purple-600/10 border border-purple-600/30 animate-fade-in">
               <div className="flex items-start gap-2">
                 <Brain className="w-5 h-5 text-purple-400 flex-shrink-0 mt-0.5" />
                 <div>
-                  <p className="text-sm font-semibold text-purple-300 mb-1">Memory Tip</p>
+                  <p className="text-sm font-semibold text-purple-300 mb-1">Hint</p>
                   <p className="text-sm text-purple-100">{currentQuestion.mnemonic}</p>
                 </div>
               </div>
