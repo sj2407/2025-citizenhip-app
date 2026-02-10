@@ -9,6 +9,7 @@ function Quiz({ questions, userState, federalOfficials, onComplete, onExit, mode
   const [isEvaluating, setIsEvaluating] = useState(false)
   const [showMnemonic, setShowMnemonic] = useState(false)
   const [results, setResults] = useState([])
+  const [animationClass, setAnimationClass] = useState('')
 
   const currentQuestion = questions[currentIndex]
   const progress = ((currentIndex) / questions.length) * 100
@@ -88,7 +89,17 @@ function Quiz({ questions, userState, federalOfficials, onComplete, onExit, mode
       )
 
       setFeedback(evaluation)
-      
+
+      // Trigger animation based on correctness
+      if (evaluation.isCorrect) {
+        setAnimationClass('animate-glow-green animate-celebrate')
+      } else {
+        setAnimationClass('animate-shake')
+      }
+
+      // Clear animation after it completes
+      setTimeout(() => setAnimationClass(''), 2000)
+
       // Store result
       setResults(prev => [...prev, {
         questionId: currentQuestion.id,
@@ -104,11 +115,21 @@ function Quiz({ questions, userState, federalOfficials, onComplete, onExit, mode
       const isCorrect = simpleMatch(userAnswer, acceptableAnswers, currentQuestion.requiredAnswers)
       setFeedback({
         isCorrect,
-        explanation: isCorrect 
-          ? 'Correct!' 
+        explanation: isCorrect
+          ? 'Correct!'
           : `The acceptable answers include: ${acceptableAnswers.slice(0, 3).join(', ')}`
       })
-      
+
+      // Trigger animation based on correctness
+      if (isCorrect) {
+        setAnimationClass('animate-glow-green animate-celebrate')
+      } else {
+        setAnimationClass('animate-shake')
+      }
+
+      // Clear animation after it completes
+      setTimeout(() => setAnimationClass(''), 2000)
+
       setResults(prev => [...prev, {
         questionId: currentQuestion.id,
         question: currentQuestion.question,
@@ -159,6 +180,7 @@ function Quiz({ questions, userState, federalOfficials, onComplete, onExit, mode
       setUserAnswer('')
       setFeedback(null)
       setShowMnemonic(false)
+      setAnimationClass('')
     } else {
       // Quiz complete
       const correct = results.filter(r => r.isCorrect).length
@@ -223,7 +245,7 @@ function Quiz({ questions, userState, federalOfficials, onComplete, onExit, mode
         </div>
 
         {/* Question Card */}
-        <div className="glass-card p-6 md:p-8 mb-6 animate-fade-in" key={currentQuestion.id}>
+        <div className={`glass-card p-6 md:p-8 mb-6 animate-fade-in ${animationClass}`} key={currentQuestion.id}>
           {/* Category & Star */}
           <div className="flex items-center gap-2 mb-4">
             <span className="text-xs px-2 py-1 rounded-full bg-primary-600/20 text-primary-300">
